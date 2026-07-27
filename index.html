@@ -3,835 +3,314 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manifesto — Painel de Importação</title>
+<title>Jr Imports</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #14171C;
-    --panel: #1C2028;
+    --bg: #0E1015;
+    --panel: #1A1E27;
     --panel-raised: #232833;
     --line: #2E333E;
     --text: #E8E6E1;
     --text-dim: #8B909C;
-    --text-faint: #5C6270;
+    --text-faint: #565C68;
     --amber: #D4A24E;
-    --amber-dim: #7A6136;
-    --green: #4CA870;
-    --green-dim: #2A4636;
-    --red: #C4634F;
-    --red-dim: #4A2E28;
+    --amber-soft: rgba(212, 162, 78, 0.14);
   }
 
   * { box-sizing: border-box; }
-
-  body {
+  html, body {
     margin: 0;
+    height: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #hero {
     min-height: 100vh;
-  }
-
-  .wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 28px 24px 80px;
-  }
-
-  /* ---------- HEADER ---------- */
-  header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: 2px solid var(--line);
-    padding-bottom: 20px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .brand {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-  }
-
-  .brand-mark {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--amber);
-    border: 1px solid var(--amber-dim);
-    padding: 3px 8px;
-    border-radius: 3px;
-    letter-spacing: 0.08em;
-  }
-
-  h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-
-  .tagline {
-    font-size: 12.5px;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-
-  .fx-status {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--text-faint);
-    text-align: right;
-    line-height: 1.6;
-  }
-
-  .fx-status b { color: var(--text-dim); font-weight: 600; }
-
-  /* ---------- LAYOUT ---------- */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1.05fr;
-    gap: 22px;
-    align-items: start;
-  }
-
-  @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr; }
-  }
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 22px;
-  }
-
-  .panel-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--text-dim);
-    margin: 0 0 18px;
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
-  }
-
-  .panel-title::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--amber);
-    border-radius: 1px;
-  }
-
-  /* ---------- FORM ---------- */
-  .field {
-    margin-bottom: 16px;
-  }
-
-  .field label {
-    display: block;
-    font-size: 12.5px;
-    color: var(--text-dim);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-
-  .field-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .field-row3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-  }
-
-  input[type=text], input[type=number] {
-    width: 100%;
-    background: var(--panel-raised);
-    border: 1px solid var(--line);
-    color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    padding: 10px 12px;
-    border-radius: 6px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  input::placeholder { color: var(--text-faint); }
-
-  input:focus {
-    border-color: var(--amber-dim);
-  }
-
-  .unit-input {
+    justify-content: center;
     position: relative;
+    padding: 24px;
+    text-align: center;
   }
-  .unit-input span {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: 'JetBrains Mono', monospace;
+
+  .glow-layer {
+    position: fixed;
+    inset: 0;
     pointer-events: none;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--amber-soft), transparent 70%);
+    transition: background 0.15s ease-out;
+    z-index: 0;
   }
 
-  .hint {
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-mark {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: var(--text-faint);
-    margin-top: 5px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    border: 1px solid rgba(212, 162, 78, 0.35);
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+    text-transform: uppercase;
   }
 
-  select {
-    width: 100%;
-    background: var(--panel-raised);
-    border: 1px solid var(--line);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 13.5px;
-    padding: 10px 12px;
-    border-radius: 6px;
-    outline: none;
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(42px, 8vw, 84px);
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(180deg, #FFFFFF, #C9CDD6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .btn {
-    width: 100%;
+  .hero-title span {
+    background: linear-gradient(120deg, var(--amber), #F0C878);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-tagline {
+    font-size: clamp(15px, 2vw, 19px);
+    color: var(--text-dim);
+    margin: 18px 0 42px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-start {
     background: var(--amber);
     color: #1A1508;
     border: none;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
-    font-size: 14.5px;
-    padding: 13px;
-    border-radius: 7px;
+    font-size: 16px;
+    padding: 15px 36px;
+    border-radius: 999px;
     cursor: pointer;
-    margin-top: 6px;
-    transition: filter 0.15s, transform 0.1s;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 0 0 rgba(212,162,78,0.4);
   }
-  .btn:hover { filter: brightness(1.08); }
-  .btn:active { transform: scale(0.99); }
+  .btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(212,162,78,0.45);
+  }
+  .btn-start:active { transform: translateY(0); }
 
-  .btn-ghost {
-    background: transparent;
-    color: var(--text-dim);
-    border: 1px solid var(--line);
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 13px;
-    padding: 9px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .btn-ghost:hover { border-color: var(--text-faint); color: var(--text); }
-
-  /* ---------- FX CARDS ---------- */
-  .fx-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  .fx-card {
-    background: var(--panel-raised);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 12px 13px;
-    position: relative;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .fx-card.selected {
-    border-color: var(--amber);
-    background: linear-gradient(180deg, rgba(212,162,78,0.08), transparent);
-  }
-  .fx-card.winner::after {
-    content: 'MELHOR';
+  .hero-footer {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: var(--green);
-    border: 1px solid var(--green-dim);
-    padding: 2px 6px;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
-  }
-
-  .fx-card-name {
-    font-size: 11.5px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 6px;
-  }
-
-  .fx-card-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .fx-card-meta {
-    font-size: 10.5px;
-    color: var(--text-faint);
-    margin-top: 4px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .fx-card input {
-    margin-top: 8px;
-    font-size: 12.5px;
-    padding: 7px 9px;
-  }
-
-  .fx-manual-toggle {
-    font-size: 10.5px;
-    color: var(--amber);
-    cursor: pointer;
-    margin-top: 8px;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  /* ---------- RECEIPT ---------- */
-  .receipt {
-    background: var(--panel-raised);
-    border: 1px dashed var(--line);
-    border-radius: 8px;
-    padding: 20px 22px;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .receipt-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 8px 0;
-    border-bottom: 1px dotted var(--line);
-    font-size: 13.5px;
-  }
-  .receipt-row:last-of-type { border-bottom: none; }
-
-  .receipt-row .label { color: var(--text-dim); }
-  .receipt-row .value { color: var(--text); font-weight: 500; }
-  .receipt-row .sub { font-size: 11px; color: var(--text-faint); display: block; margin-top: 2px; font-family: 'Inter', sans-serif;}
-
-  .receipt-total {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 2px solid var(--amber-dim);
-  }
-  .receipt-total .label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-dim);
-  }
-  .receipt-total .value {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--amber);
-  }
-
-  .badge-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-  .badge {
+    bottom: 28px;
     font-size: 11px;
-    padding: 4px 9px;
-    border-radius: 20px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-  }
-  .badge.ok { background: var(--green-dim); color: var(--green); }
-  .badge.warn { background: var(--red-dim); color: var(--red); }
-
-  .empty-state {
-    text-align: center;
-    padding: 50px 20px;
     color: var(--text-faint);
-    font-size: 13.5px;
-  }
-  .empty-state svg { opacity: 0.3; margin-bottom: 14px; }
-
-  /* ---------- HISTORY ---------- */
-  .history-section {
-    margin-top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    z-index: 2;
   }
 
-  .history-list {
+  #select {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  #select.active { display: flex; }
+  #hero.hidden { display: none; }
+
+  .select-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .select-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .select-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .select-sub {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin-top: 8px;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
+    gap: 16px;
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .platform-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 22px;
+    text-decoration: none;
+    color: var(--text);
     display: flex;
     flex-direction: column;
-    gap: 8px;
-  }
-
-  .history-item {
-    background: var(--panel-raised);
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    padding: 12px 14px;
-    display: grid;
-    grid-template-columns: 1fr auto auto;
     align-items: center;
-    gap: 14px;
-    font-size: 13px;
-  }
-  @media (max-width: 640px) {
-    .history-item { grid-template-columns: 1fr; }
+    text-align: center;
+    gap: 10px;
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    cursor: pointer;
   }
 
-  .history-item .name {
+  .platform-card.active-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+    background: var(--panel-raised);
+  }
+
+  .platform-card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .platform-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--amber-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+
+  .platform-name {
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
-    color: var(--text);
+    font-size: 16.5px;
   }
-  .history-item .meta {
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 2px;
-  }
-  .history-item .total {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 600;
-    color: var(--amber);
-    font-size: 15px;
-    white-space: nowrap;
-  }
-  .history-item .del {
-    background: none;
-    border: none;
-    color: var(--text-faint);
-    cursor: pointer;
-    font-size: 16px;
-    padding: 4px 8px;
-  }
-  .history-item .del:hover { color: var(--red); }
 
-  .history-empty {
-    color: var(--text-faint);
+  .platform-desc {
     font-size: 12.5px;
-    text-align: center;
-    padding: 18px;
-    border: 1px dashed var(--line);
-    border-radius: 8px;
+    color: var(--text-faint);
+    line-height: 1.4;
   }
 
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .platform-tag {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-faint);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 4px;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .back-link:hover { color: var(--text-dim); }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div>
-      <div class="brand">
-        <span class="brand-mark">POD № 001</span>
-        <h1>Manifesto</h1>
-      </div>
-      <div class="tagline">Painel de custo total de importação — CSSBuy / China → Brasil</div>
-    </div>
-    <div class="fx-status" id="fxStatus">verificando cotações...</div>
-  </header>
+<div class="glow-layer" id="glow"></div>
+<div class="grain"></div>
 
-  <div class="grid">
-    <!-- FORM PANEL -->
-    <div class="panel">
-      <p class="panel-title">Dados do envio</p>
+<div id="hero">
+  <div class="hero-content">
+    <div class="hero-mark">Importação sem dor de cabeça</div>
+    <h1 class="hero-title">Jr <span>Imports</span></h1>
+    <p class="hero-tagline">Facilitando sua importação, do pedido à porta de casa.</p>
+    <button class="btn-start" onclick="goToSelect()">Iniciar</button>
+  </div>
+  <div class="hero-footer">JR IMPORTS © 2026</div>
+</div>
 
-      <div class="field">
-        <label for="prodName">Produto</label>
-        <input type="text" id="prodName" placeholder="Ex: Ae64 Pro">
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label for="prodValue">Valor do produto</label>
-          <div class="unit-input">
-            <input type="number" id="prodValue" placeholder="0,00" step="0.01">
-            <span>YUAN</span>
-          </div>
-        </div>
-        <div class="field">
-          <label for="prodWeight">Peso real</label>
-          <div class="unit-input">
-            <input type="number" id="prodWeight" placeholder="0" step="1">
-            <span>GRAMAS</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Dimensões da caixa <span style="color:var(--text-faint); font-weight:400;">(opcional — calcula peso volumétrico)</span></label>
-        <div class="field-row3">
-          <input type="number" id="dimL" placeholder="Compr. cm">
-          <input type="number" id="dimW" placeholder="Larg. cm">
-          <input type="number" id="dimH" placeholder="Alt. cm">
-        </div>
-        <div class="hint">Volumétrico = (C × L × A) ÷ 8000 — usa o maior entre real e volumétrico</div>
-      </div>
-
-      <div class="field">
-        <label for="declValue">Valor declarado</label>
-        <div class="unit-input">
-          <input type="number" id="declValue" placeholder="0,00" step="0.01" value="12">
-          <span>USD</span>
-        </div>
-        <div class="hint">Até US$ 50: isento de Imposto de Importação, só paga ICMS</div>
-      </div>
-
-      <p class="panel-title" style="margin-top: 24px;">Cotações</p>
-
-      <div class="fx-cards" id="fxCards">
-        <!-- populated by JS -->
-      </div>
-
-      <div class="field">
-        <label for="usdRate">Dólar comercial (frete + ICMS) <span id="usdSrc" style="color:var(--text-faint); font-weight:400;"></span></label>
-        <div class="unit-input">
-          <input type="number" id="usdRate" placeholder="0.00" step="0.0001">
-          <span>R$/US$</span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="icmsRate">Alíquota ICMS do seu estado</label>
-        <select id="icmsRate">
-          <option value="17">17%</option>
-          <option value="18" selected>18%</option>
-          <option value="19">19%</option>
-          <option value="20">20%</option>
-        </select>
-      </div>
-
-      <button class="btn" onclick="calcular()">Calcular importação</button>
-      <button class="btn-ghost" style="margin-top:8px;" onclick="buscarCotacoes()">↻ Atualizar cotações</button>
-    </div>
-
-    <!-- RESULT PANEL -->
-    <div class="panel">
-      <p class="panel-title">Recibo estimado</p>
-      <div id="resultArea">
-        <div class="empty-state">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
-          <div>Preencha os dados do produto e clique em<br>"Calcular importação" pra ver o breakdown.</div>
-        </div>
-      </div>
-
-      <div class="history-section">
-        <p class="panel-title">Histórico <span style="color:var(--text-faint); text-transform:none; letter-spacing:0; font-weight:400; font-size:12px;">— salvo nesta sessão</span></p>
-        <div class="history-list" id="historyList">
-          <div class="history-empty">Nenhum item calculado ainda.</div>
-        </div>
-      </div>
+<div id="select">
+  <a class="back-link" onclick="goToHero()">← voltar</a>
+  <div class="select-header">
+    <div class="select-eyebrow">Escolha a plataforma</div>
+    <h2 class="select-title">Qual agente você usa?</h2>
+    <p class="select-sub">Selecione pra abrir a calculadora de importação certa</p>
+  </div>
+  <div class="platform-grid">
+    <a class="platform-card active-card" href="cssbuy.html">
+      <div class="platform-icon">CS</div>
+      <div class="platform-name">CSSBuy</div>
+      <div class="platform-desc">Frete, seguro e ICMS calculados automaticamente</div>
+      <div class="platform-tag">disponível</div>
+    </a>
+    <div class="platform-card disabled">
+      <div class="platform-icon">?</div>
+      <div class="platform-name">Em breve</div>
+      <div class="platform-desc">Novas plataformas chegando</div>
     </div>
   </div>
 </div>
 
 <script>
-let fxData = {
-  cayuan: { value: null, ok: false, source: 'manual', ts: null },
-  bytemax: { value: null, ok: false, source: 'manual', ts: null },
-};
-let usdData = { value: 5.10, ok: false, source: 'manual' };
-let history = [];
-let selectedFx = 'cayuan';
-
-async function fetchWithTimeout(url, opts, ms) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ms);
-  try {
-    const res = await fetch(url, { ...opts, signal: controller.signal });
-    clearTimeout(timer);
-    return res;
-  } catch (e) {
-    clearTimeout(timer);
-    throw e;
-  }
-}
-
-async function buscarCayuan() {
-  try {
-    const res = await fetchWithTimeout('/api/cayuan', {}, 6000);
-    if (!res.ok) throw new Error('bad status');
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    fxData.cayuan = { value: data.yuan_per_brl, ok: true, source: 'automática', ts: data.timestamp };
-  } catch (e) {
-    fxData.cayuan.ok = false;
-    fxData.cayuan.source = 'manual';
-  }
-}
-
-async function buscarByteMax() {
-  try {
-    const res = await fetchWithTimeout('/api/bytemax', {}, 6000);
-    if (!res.ok) throw new Error('bad status');
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    fxData.bytemax = { value: data.cotacao_moeda_1, ok: true, source: 'automática', ts: new Date().toISOString() };
-  } catch (e) {
-    fxData.bytemax.ok = false;
-    fxData.bytemax.source = 'manual';
-  }
-}
-
-async function buscarUSD() {
-  try {
-    const res = await fetchWithTimeout('https://economia.awesomeapi.com.br/json/last/USD-BRL', {}, 4000);
-    if (!res.ok) throw new Error('bad status');
-    const data = await res.json();
-    usdData = { value: parseFloat(data.USDBRL.bid), ok: true, source: 'automática' };
-  } catch (e) {
-    usdData.ok = false;
-    usdData.source = 'manual';
-  }
-}
-
-function renderFxStatus() {
-  const parts = [];
-  parts.push(`<b>Cayuan</b> ${fxData.cayuan.ok ? 'auto ✓' : 'manual'}`);
-  parts.push(`<b>ByteMax</b> ${fxData.bytemax.ok ? 'auto ✓' : 'manual'}`);
-  parts.push(`<b>USD/BRL</b> ${usdData.ok ? 'auto ✓' : 'manual'}`);
-  document.getElementById('fxStatus').innerHTML = parts.join(' &nbsp;·&nbsp; ');
-}
-
-function renderFxCards() {
-  const winner = (fxData.cayuan.value && fxData.bytemax.value)
-    ? (fxData.cayuan.value >= fxData.bytemax.value ? 'cayuan' : 'bytemax')
-    : null;
-
-  const cardHtml = (key, label, fx) => {
-    const isSelected = selectedFx === key;
-    const isWinner = winner === key;
-    const val = fx.value !== null ? fx.value.toFixed(4) : '—';
-    return `
-      <div class="fx-card ${isSelected ? 'selected' : ''} ${isWinner ? 'winner' : ''}" onclick="selectFx('${key}')">
-        <div class="fx-card-name">${label}</div>
-        <div class="fx-card-value">¥ ${val}</div>
-        <div class="fx-card-meta">${fx.ok ? 'automática' : 'manual · toque pra editar'}</div>
-        ${!fx.ok ? `<input type="number" step="0.0001" placeholder="Digite ¥/R$" onclick="event.stopPropagation()" onchange="setManualFx('${key}', this.value)">` : ''}
-      </div>
-    `;
-  };
-
-  document.getElementById('fxCards').innerHTML =
-    cardHtml('cayuan', 'Cayuan', fxData.cayuan) +
-    cardHtml('bytemax', 'ByteMax', fxData.bytemax);
-}
-
-function selectFx(key) {
-  selectedFx = key;
-  renderFxCards();
-}
-
-function setManualFx(key, val) {
-  const num = parseFloat(val);
-  if (!isNaN(num) && num > 0) {
-    fxData[key] = { value: num, ok: false, source: 'manual (editado)', ts: null };
-    renderFxCards();
-  }
-}
-
-async function buscarCotacoes() {
-  document.getElementById('fxStatus').textContent = 'buscando cotações...';
-  await Promise.all([buscarCayuan(), buscarByteMax(), buscarUSD()]);
-  renderFxStatus();
-  renderFxCards();
-  document.getElementById('usdRate').value = usdData.value.toFixed(4);
-  document.getElementById('usdSrc').textContent = usdData.ok ? '(auto)' : '(manual)';
-}
-
-function calcularFrete(pesoRealG, dimL, dimW, dimH) {
-  let pesoVolumetricoG = 0;
-  if (dimL > 0 && dimW > 0 && dimH > 0) {
-    // volumétrico (kg) = C*L*A / 8000, convertendo pra gramas
-    pesoVolumetricoG = ((dimL * dimW * dimH) / 8000) * 1000;
-  }
-  const pesoConsiderado = Math.max(pesoRealG, pesoVolumetricoG);
-  const blocos = Math.ceil(pesoConsiderado / 100);
-  const blocosEfetivos = Math.max(blocos, 1);
-  let freteUSD;
-  if (blocosEfetivos <= 1) {
-    freteUSD = 8.89;
-  } else {
-    freteUSD = 8.89 + (blocosEfetivos - 1) * 2.00;
-  }
-  return { freteUSD, pesoConsiderado, pesoVolumetricoG, blocos: blocosEfetivos };
-}
-
-function calcular() {
-  const nome = document.getElementById('prodName').value || 'Produto sem nome';
-  const valorYuan = parseFloat(document.getElementById('prodValue').value);
-  const pesoG = parseFloat(document.getElementById('prodWeight').value);
-  const dimL = parseFloat(document.getElementById('dimL').value) || 0;
-  const dimW = parseFloat(document.getElementById('dimW').value) || 0;
-  const dimH = parseFloat(document.getElementById('dimH').value) || 0;
-  const declUSD = parseFloat(document.getElementById('declValue').value) || 0;
-  const usdRate = parseFloat(document.getElementById('usdRate').value);
-  const icmsPct = parseFloat(document.getElementById('icmsRate').value) / 100;
-
-  if (isNaN(valorYuan) || valorYuan <= 0) {
-    alert('Preencha o valor do produto em Yuan.');
-    return;
-  }
-  if (isNaN(pesoG) || pesoG <= 0) {
-    alert('Preencha o peso do produto em gramas.');
-    return;
-  }
-  if (isNaN(usdRate) || usdRate <= 0) {
-    alert('Preencha a cotação do dólar comercial (ou clique em Atualizar cotações).');
-    return;
-  }
-
-  const fxCayuan = fxData.cayuan.value;
-  const fxBytemax = fxData.bytemax.value;
-  const fxEscolhida = fxData[selectedFx].value;
-
-  if (!fxEscolhida) {
-    alert('Preencha ou busque uma cotação Yuan/Real antes de calcular.');
-    return;
-  }
-
-  // produto
-  const produtoBRL = valorYuan / fxEscolhida;
-
-  // frete
-  const frete = calcularFrete(pesoG, dimL, dimW, dimH);
-  const freteBRL = frete.freteUSD * usdRate;
-
-  // seguro
-  const seguroBRL = (produtoBRL + freteBRL) * 0.03;
-
-  // ICMS / II
-  const declBRL = declUSD * usdRate;
-  let iiBRL = 0;
-  let icmsBase = declBRL;
-  if (declUSD > 50) {
-    iiBRL = declBRL * 0.60;
-    icmsBase = declBRL + iiBRL;
-  }
-  const icmsBRL = (icmsBase / (1 - icmsPct)) - icmsBase;
-
-  const totalBRL = produtoBRL + freteBRL + seguroBRL + iiBRL + icmsBRL;
-
-  // comparação com a outra cotação
-  let comparacaoHtml = '';
-  if (fxCayuan && fxBytemax) {
-    const outraKey = selectedFx === 'cayuan' ? 'bytemax' : 'cayuan';
-    const outraFx = fxData[outraKey].value;
-    const outraLabel = outraKey === 'cayuan' ? 'Cayuan' : 'ByteMax';
-    const produtoOutra = valorYuan / outraFx;
-    const diff = produtoOutra - produtoBRL;
-    if (Math.abs(diff) > 0.01) {
-      comparacaoHtml = `<div class="badge ${diff > 0 ? 'ok' : 'warn'}">
-        ${diff > 0 ? `Economizando R$ ${diff.toFixed(2)} vs ${outraLabel}` : `${outraLabel} seria R$ ${Math.abs(diff).toFixed(2)} mais barato`}
-      </div>`;
-    }
-  }
-
-  const volAlerta = frete.pesoVolumetricoG > pesoG
-    ? `<div class="badge warn">Peso volumétrico (${frete.pesoVolumetricoG.toFixed(0)}g) maior que o real — usado no cálculo</div>`
-    : '';
-  const isentoBadge = declUSD <= 50
-    ? `<div class="badge ok">Isento de II (declaração ≤ US$ 50)</div>`
-    : `<div class="badge warn">II de 60% aplicado (declaração > US$ 50)</div>`;
-
-  const resultHtml = `
-    <div class="receipt">
-      <div class="receipt-row">
-        <span class="label">Produto (¥${valorYuan.toFixed(2)} ÷ ${fxEscolhida.toFixed(4)})<span class="sub">via ${selectedFx === 'cayuan' ? 'Cayuan' : 'ByteMax'}</span></span>
-        <span class="value">R$ ${produtoBRL.toFixed(2)}</span>
-      </div>
-      <div class="receipt-row">
-        <span class="label">Frete (${frete.blocos} blocos de 100g = US$ ${frete.freteUSD.toFixed(2)})<span class="sub">peso considerado: ${frete.pesoConsiderado.toFixed(0)}g</span></span>
-        <span class="value">R$ ${freteBRL.toFixed(2)}</span>
-      </div>
-      <div class="receipt-row">
-        <span class="label">Seguro (3%)</span>
-        <span class="value">R$ ${seguroBRL.toFixed(2)}</span>
-      </div>
-      ${iiBRL > 0 ? `
-      <div class="receipt-row">
-        <span class="label">Imposto de Importação (60%)</span>
-        <span class="value">R$ ${iiBRL.toFixed(2)}</span>
-      </div>` : ''}
-      <div class="receipt-row">
-        <span class="label">ICMS (${(icmsPct*100).toFixed(0)}% por dentro)<span class="sub">base: US$ ${declUSD.toFixed(2)} declarado</span></span>
-        <span class="value">R$ ${icmsBRL.toFixed(2)}</span>
-      </div>
-      <div class="receipt-total">
-        <span class="label">Total estimado</span>
-        <span class="value">R$ ${totalBRL.toFixed(2)}</span>
-      </div>
-      <div class="badge-row">
-        ${isentoBadge}
-        ${volAlerta}
-        ${comparacaoHtml}
-      </div>
-    </div>
-  `;
-
-  document.getElementById('resultArea').innerHTML = resultHtml;
-
-  history.unshift({
-    nome, totalBRL, produtoBRL, freteBRL,
-    fonte: selectedFx === 'cayuan' ? 'Cayuan' : 'ByteMax',
-    data: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+  const glow = document.getElementById('glow');
+  window.addEventListener('mousemove', (e) => {
+    glow.style.setProperty('--mx', e.clientX + 'px');
+    glow.style.setProperty('--my', e.clientY + 'px');
   });
-  renderHistory();
-}
 
-function renderHistory() {
-  const el = document.getElementById('historyList');
-  if (history.length === 0) {
-    el.innerHTML = '<div class="history-empty">Nenhum item calculado ainda.</div>';
-    return;
+  function goToSelect() {
+    document.getElementById('hero').classList.add('hidden');
+    document.getElementById('select').classList.add('active');
   }
-  el.innerHTML = history.map((h, i) => `
-    <div class="history-item">
-      <div>
-        <div class="name">${h.nome}</div>
-        <div class="meta">${h.data} · ${h.fonte}</div>
-      </div>
-      <div class="total">R$ ${h.totalBRL.toFixed(2)}</div>
-      <button class="del" onclick="removeHistory(${i})">✕</button>
-    </div>
-  `).join('');
-}
-
-function removeHistory(i) {
-  history.splice(i, 1);
-  renderHistory();
-}
-
-// init
-renderFxCards();
-buscarCotacoes();
+  function goToHero() {
+    document.getElementById('select').classList.remove('active');
+    document.getElementById('hero').classList.remove('hidden');
+  }
 </script>
 
 </body>
