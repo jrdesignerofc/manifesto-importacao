@@ -496,14 +496,66 @@
         <div class="hint">Volumétrico = (C × L × A) ÷ 8000 — usa o maior entre real e volumétrico</div>
       </div>
 
-      <div class="field">
-        <button type="button" class="btn-ghost" style="width:100%;" onclick="buscarFretes()" id="btnBuscarFrete">↻ Buscar opções de frete (CSSBuy)</button>
+      <p class="panel-title" style="margin-top: 24px;">Serviços adicionais (warehouse)</p>
+
+      <div class="field" style="display:flex; flex-direction:column; gap:9px;">
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Protection box" data-preco="0.74" style="width:auto;">
+          Add protection box <span style="color:var(--text-faint);">— $0.74</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Gas column pack" data-preco="0.89" style="width:auto;">
+          Add gas column pack <span style="color:var(--text-faint);">— $0.89</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Measure size" data-preco="0.59" style="width:auto;">
+          Measure size <span style="color:var(--text-faint);">— $0.59</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Take video" data-preco="0.89" style="width:auto;">
+          Take video <span style="color:var(--text-faint);">— $0.89</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Priority purchase" data-preco="0.59" style="width:auto;">
+          Priority purchase <span style="color:var(--text-faint);">— $0.59</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
+          <input type="checkbox" class="servico-extra" data-nome="Shoe tree" data-preco="0.74" style="width:auto;">
+          Shoe tree <span style="color:var(--text-faint);">— $0.74</span>
+        </label>
       </div>
 
-      <div class="field" id="freteSelectWrap" style="display:none;">
-        <label for="freteSelect">Método de envio</label>
-        <select id="freteSelect" onchange="onFreteSelected()"></select>
-        <div class="hint" id="freteHint"></div>
+      <div class="field" style="margin-top:14px;">
+        <label style="margin-bottom:8px;">Take photos</label>
+        <div style="display:flex; flex-direction:column; gap:8px; background:var(--panel-raised); border:1px solid var(--line); border-radius:8px; padding:12px 14px;">
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
+            <input type="checkbox" class="servico-extra" data-nome="Size Tag" data-preco="0.15" style="width:auto;">
+            Size Tag <span style="color:var(--text-faint);">— $0.15</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
+            <input type="checkbox" class="servico-extra" data-nome="Wash Tag" data-preco="0.15" style="width:auto;">
+            Wash Tag <span style="color:var(--text-faint);">— $0.15</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
+            <input type="checkbox" class="servico-extra" data-nome="Close-up Material" data-preco="0.15" style="width:auto;">
+            Close-up Material <span style="color:var(--text-faint);">— $0.15</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
+            <input type="checkbox" class="servico-extra" data-nome="Close-up Logo" data-preco="0.15" style="width:auto;">
+            Close-up Logo <span style="color:var(--text-faint);">— $0.15</span>
+          </label>
+          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
+            <input type="checkbox" class="servico-extra" data-nome="Standard QC Set" data-preco="0.44" style="width:auto;">
+            Standard QC Set (até 10 fotos) <span style="color:var(--text-faint);">— $0.44</span>
+          </label>
+          <div style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); border-top:1px solid var(--line); padding-top:8px; margin-top:2px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; flex:1;">
+              <input type="checkbox" id="customPhotoCheck" onchange="toggleCustomPhotoQty()" style="width:auto;">
+              Custom Photo <span style="color:var(--text-faint);">— $0.15 cada</span>
+            </label>
+            <input type="number" id="customPhotoQty" value="1" min="1" style="width:60px; padding:6px 8px; display:none;">
+          </div>
+        </div>
       </div>
 
       <div class="field">
@@ -677,85 +729,47 @@ async function buscarCotacoes() {
   document.getElementById('usdSrc').textContent = usdData.ok ? '(auto)' : '(manual)';
 }
 
-let fretesDisponiveis = [];
-let freteEscolhido = null;
-
-function calcularVolume(dimL, dimW, dimH) {
+function calcularFrete(pesoRealG, dimL, dimW, dimH) {
+  let pesoVolumetricoG = 0;
   if (dimL > 0 && dimW > 0 && dimH > 0) {
-    return dimL * dimW * dimH; // cm³, o próprio CSSBuy calcula o peso volumétrico do lado deles
+    pesoVolumetricoG = ((dimL * dimW * dimH) / 8000) * 1000;
   }
-  return 0;
+  const pesoConsiderado = Math.max(pesoRealG, pesoVolumetricoG);
+  const blocos = Math.max(Math.ceil(pesoConsiderado / 100), 1);
+  let freteUSD;
+  if (blocos <= 1) {
+    freteUSD = 8.89;
+  } else {
+    freteUSD = 8.89 + (blocos - 1) * 2.00;
+  }
+  return { freteUSD, pesoConsiderado, pesoVolumetricoG, blocos };
 }
 
-async function buscarFretes() {
-  const pesoG = parseFloat(document.getElementById('prodWeight').value);
-  const dimL = parseFloat(document.getElementById('dimL').value) || 0;
-  const dimW = parseFloat(document.getElementById('dimW').value) || 0;
-  const dimH = parseFloat(document.getElementById('dimH').value) || 0;
-
-  if (isNaN(pesoG) || pesoG <= 0) {
-    alert('Preencha o peso do produto em gramas antes de buscar o frete.');
-    return;
-  }
-
-  const btn = document.getElementById('btnBuscarFrete');
-  const textoOriginal = btn.textContent;
-  btn.textContent = 'Buscando...';
-  btn.disabled = true;
-
-  const volume = calcularVolume(dimL, dimW, dimH);
-
-  try {
-    const params = new URLSearchParams({ weight: pesoG, volume: volume || '' });
-    const res = await fetch('/api/frete?' + params.toString());
-    const data = await res.json();
-
-    if (data.error || !data.fretes) {
-      console.error('Erro ao buscar fretes:', data);
-      throw new Error(data.body || data.message || data.error || 'sem dados');
-    }
-
-    fretesDisponiveis = data.fretes.filter(f => f.suportado);
-    renderFreteSelect();
-  } catch (e) {
-    alert('Não foi possível buscar os fretes automaticamente.\n\nDetalhe técnico: ' + e.message);
-    fretesDisponiveis = [];
-  } finally {
-    btn.textContent = textoOriginal;
-    btn.disabled = false;
-  }
+function toggleCustomPhotoQty() {
+  const check = document.getElementById('customPhotoCheck');
+  const qty = document.getElementById('customPhotoQty');
+  qty.style.display = check.checked ? 'inline-block' : 'none';
 }
 
-function renderFreteSelect() {
-  const wrap = document.getElementById('freteSelectWrap');
-  const select = document.getElementById('freteSelect');
+function calcularServicosExtras() {
+  let totalUSD = 0;
+  const itens = [];
 
-  if (fretesDisponiveis.length === 0) {
-    wrap.style.display = 'none';
-    return;
+  document.querySelectorAll('.servico-extra:checked').forEach((el) => {
+    const preco = parseFloat(el.dataset.preco);
+    totalUSD += preco;
+    itens.push(`${el.dataset.nome} ($${preco.toFixed(2)})`);
+  });
+
+  const customCheck = document.getElementById('customPhotoCheck');
+  if (customCheck && customCheck.checked) {
+    const qty = parseInt(document.getElementById('customPhotoQty').value) || 1;
+    const subtotal = qty * 0.15;
+    totalUSD += subtotal;
+    itens.push(`Custom Photo x${qty} ($${subtotal.toFixed(2)})`);
   }
 
-  // ordena do mais barato pro mais caro (em yuan)
-  const ordenados = [...fretesDisponiveis].sort((a, b) => a.taxaYuan - b.taxaYuan);
-
-  select.innerHTML = ordenados.map((f, i) =>
-    `<option value="${f.id}">${f.nome} — ¥${f.taxaYuan.toFixed(2)} (${f.prazo} dias)</option>`
-  ).join('');
-
-  wrap.style.display = 'block';
-  freteEscolhido = ordenados[0];
-  select.value = ordenados[0].id;
-  onFreteSelected();
-}
-
-function onFreteSelected() {
-  const select = document.getElementById('freteSelect');
-  const id = parseInt(select.value);
-  freteEscolhido = fretesDisponiveis.find(f => f.id === id);
-  const hint = document.getElementById('freteHint');
-  if (freteEscolhido) {
-    hint.textContent = `Faixa: ${freteEscolhido.pesoMinG}g a ${freteEscolhido.pesoMaxG}g · US$ ${freteEscolhido.taxaUSD.toFixed(2)}`;
-  }
+  return { totalUSD, itens };
 }
 
 function calcular() {
@@ -774,12 +788,12 @@ function calcular() {
     alert('Preencha o peso do produto em gramas.');
     return;
   }
+  const dimL = parseFloat(document.getElementById('dimL').value) || 0;
+  const dimW = parseFloat(document.getElementById('dimW').value) || 0;
+  const dimH = parseFloat(document.getElementById('dimH').value) || 0;
+
   if (isNaN(usdRate) || usdRate <= 0) {
     alert('Preencha a cotação do dólar comercial (ou clique em Atualizar cotações).');
-    return;
-  }
-  if (!freteEscolhido) {
-    alert('Clique em "Buscar opções de frete" e escolha um método de envio antes de calcular.');
     return;
   }
 
@@ -795,9 +809,13 @@ function calcular() {
   // produto
   const produtoBRL = valorYuan / fxEscolhida;
 
-  // frete (vem em Yuan do CSSBuy, convertido pela mesma cotação Yuan/Real escolhida)
-  const freteBRL = freteEscolhido.taxaYuan / fxEscolhida;
-  const frete = { blocos: null, pesoConsiderado: pesoG, nomeMetodo: freteEscolhido.nome, prazo: freteEscolhido.prazo };
+  // frete (tabela fixa CSSBuy: $8,89 primeiro bloco de 100g + $2,00 por bloco adicional)
+  const frete = calcularFrete(pesoG, dimL, dimW, dimH);
+  const freteBRL = frete.freteUSD * usdRate;
+
+  // serviços adicionais de warehouse (cobrados em USD)
+  const servicosExtras = calcularServicosExtras();
+  const servicosBRL = servicosExtras.totalUSD * usdRate;
 
   // seguro
   const seguroBRL = (produtoBRL + freteBRL) * 0.03;
@@ -812,7 +830,7 @@ function calcular() {
   }
   const icmsBRL = (icmsBase / (1 - icmsPct)) - icmsBase;
 
-  const totalBRL = produtoBRL + freteBRL + seguroBRL + iiBRL + icmsBRL;
+  const totalBRL = produtoBRL + freteBRL + servicosBRL + seguroBRL + iiBRL + icmsBRL;
 
   // comparação com a outra cotação
   let comparacaoHtml = '';
@@ -829,10 +847,18 @@ function calcular() {
     }
   }
 
-  const volAlerta = '';
+  const volAlerta = frete.pesoVolumetricoG > pesoG
+    ? `<div class="badge warn">Peso volumétrico (${frete.pesoVolumetricoG.toFixed(0)}g) maior que o real — usado no cálculo</div>`
+    : '';
   const isentoBadge = declUSD <= 50
     ? `<div class="badge ok">Isento de II (declaração ≤ US$ 50)</div>`
     : `<div class="badge warn">II de 60% aplicado (declaração > US$ 50)</div>`;
+
+  const servicosRowHtml = servicosExtras.itens.length > 0 ? `
+      <div class="receipt-row">
+        <span class="label">Serviços adicionais (warehouse)<span class="sub">${servicosExtras.itens.join(', ')}</span></span>
+        <span class="value">R$ ${servicosBRL.toFixed(2)}</span>
+      </div>` : '';
 
   const resultHtml = `
     <div class="receipt">
@@ -841,9 +867,9 @@ function calcular() {
         <span class="value">R$ ${produtoBRL.toFixed(2)}</span>
       </div>
       <div class="receipt-row">
-        <span class="label">Frete (${frete.nomeMetodo})<span class="sub">prazo: ${frete.prazo} dias · ¥${freteEscolhido.taxaYuan.toFixed(2)}</span></span>
+        <span class="label">Frete (${frete.blocos} blocos de 100g = US$ ${frete.freteUSD.toFixed(2)})<span class="sub">peso considerado: ${frete.pesoConsiderado.toFixed(0)}g</span></span>
         <span class="value">R$ ${freteBRL.toFixed(2)}</span>
-      </div>
+      </div>${servicosRowHtml}
       <div class="receipt-row">
         <span class="label">Seguro (3%)</span>
         <span class="value">R$ ${seguroBRL.toFixed(2)}</span>
