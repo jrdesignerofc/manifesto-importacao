@@ -497,6 +497,16 @@
       </div>
 
       <div class="field">
+        <button type="button" class="btn-ghost" style="width:100%;" onclick="buscarFretes()" id="btnBuscarFrete">↻ Buscar opções de frete (CSSBuy)</button>
+      </div>
+
+      <div class="field" id="freteSelectWrap" style="display:none;">
+        <label for="freteSelect">Método de envio</label>
+        <select id="freteSelect" onchange="onFreteSelected()"></select>
+        <div class="hint" id="freteHint"></div>
+      </div>
+
+      <div class="field">
         <label for="declValue">Valor declarado</label>
         <div class="unit-input">
           <input type="number" id="declValue" placeholder="0,00" step="0.01" value="12">
@@ -667,31 +677,90 @@ async function buscarCotacoes() {
   document.getElementById('usdSrc').textContent = usdData.ok ? '(auto)' : '(manual)';
 }
 
-function calcularFrete(pesoRealG, dimL, dimW, dimH) {
-  let pesoVolumetricoG = 0;
+let fretesDisponiveis = [];
+let freteEscolhido = null;
+
+function calcularVolume(dimL, dimW, dimH) {
   if (dimL > 0 && dimW > 0 && dimH > 0) {
-    // volumétrico (kg) = C*L*A / 8000, convertendo pra gramas
-    pesoVolumetricoG = ((dimL * dimW * dimH) / 8000) * 1000;
+    return dimL * dimW * dimH; // cm³, o próprio CSSBuy calcula o peso volumétrico do lado deles
   }
-  const pesoConsiderado = Math.max(pesoRealG, pesoVolumetricoG);
-  const blocos = Math.ceil(pesoConsiderado / 100);
-  const blocosEfetivos = Math.max(blocos, 1);
-  let freteUSD;
-  if (blocosEfetivos <= 1) {
-    freteUSD = 8.89;
-  } else {
-    freteUSD = 8.89 + (blocosEfetivos - 1) * 2.00;
+  return 0;
+}
+
+async function buscarFretes() {
+  const pesoG = parseFloat(document.getElementById('prodWeight').value);
+  const dimL = parseFloat(document.getElementById('dimL').value) || 0;
+  const dimW = parseFloat(document.getElementById('dimW').value) || 0;
+  const dimH = parseFloat(document.getElementById('dimH').value) || 0;
+
+  if (isNaN(pesoG) || pesoG <= 0) {
+    alert('Preencha o peso do produto em gramas antes de buscar o frete.');
+    return;
   }
-  return { freteUSD, pesoConsiderado, pesoVolumetricoG, blocos: blocosEfetivos };
+
+  const btn = document.getElementById('btnBuscarFrete');
+  const textoOriginal = btn.textContent;
+  btn.textContent = 'Buscando...';
+  btn.disabled = true;
+
+  const volume = calcularVolume(dimL, dimW, dimH);
+
+  try {
+    const params = new URLSearchParams({ weight: pesoG, volume: volume || '' });
+    const res = await fetch('/api/frete?' + params.toString());
+    const data = await res.json();
+
+    if (data.error || !data.fretes) {
+      throw new Error(data.error || 'sem dados');
+    }
+
+    fretesDisponiveis = data.fretes.filter(f => f.suportado);
+    renderFreteSelect();
+  } catch (e) {
+    alert('Não foi possível buscar os fretes automaticamente. Confira sua conexão ou tente de novo em instantes.');
+    fretesDisponiveis = [];
+  } finally {
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+  }
+}
+
+function renderFreteSelect() {
+  const wrap = document.getElementById('freteSelectWrap');
+  const select = document.getElementById('freteSelect');
+
+  if (fretesDisponiveis.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  // ordena do mais barato pro mais caro (em yuan)
+  const ordenados = [...fretesDisponiveis].sort((a, b) => a.taxaYuan - b.taxaYuan);
+
+  select.innerHTML = ordenados.map((f, i) =>
+    `<option value="${f.id}">${f.nome} — ¥${f.taxaYuan.toFixed(2)} (${f.prazo} dias)</option>`
+  ).join('');
+
+  wrap.style.display = 'block';
+  freteEscolhido = ordenados[0];
+  select.value = ordenados[0].id;
+  onFreteSelected();
+}
+
+function onFreteSelected() {
+  const select = document.getElementById('freteSelect');
+  const id = parseInt(select.value);
+  freteEscolhido = fretesDisponiveis.find(f => f.id === id);
+  const hint = document.getElementById('freteHint');
+  if (freteEscolhido) {
+    hint.textContent = `Faixa: ${freteEscolhido.pesoMinG}g a ${freteEscolhido.pesoMaxG}g · US$ ${freteEscolhido.taxaUSD.toFixed(2)}`;
+  }
 }
 
 function calcular() {
   const nome = document.getElementById('prodName').value || 'Produto sem nome';
   const valorYuan = parseFloat(document.getElementById('prodValue').value);
   const pesoG = parseFloat(document.getElementById('prodWeight').value);
-  const dimL = parseFloat(document.getElementById('dimL').value) || 0;
-  const dimW = parseFloat(document.getElementById('dimW').value) || 0;
-  const dimH = parseFloat(document.getElementById('dimH').value) || 0;
   const declUSD = parseFloat(document.getElementById('declValue').value) || 0;
   const usdRate = parseFloat(document.getElementById('usdRate').value);
   const icmsPct = parseFloat(document.getElementById('icmsRate').value) / 100;
@@ -708,6 +777,10 @@ function calcular() {
     alert('Preencha a cotação do dólar comercial (ou clique em Atualizar cotações).');
     return;
   }
+  if (!freteEscolhido) {
+    alert('Clique em "Buscar opções de frete" e escolha um método de envio antes de calcular.');
+    return;
+  }
 
   const fxCayuan = fxData.cayuan.value;
   const fxBytemax = fxData.bytemax.value;
@@ -721,9 +794,9 @@ function calcular() {
   // produto
   const produtoBRL = valorYuan / fxEscolhida;
 
-  // frete
-  const frete = calcularFrete(pesoG, dimL, dimW, dimH);
-  const freteBRL = frete.freteUSD * usdRate;
+  // frete (vem em Yuan do CSSBuy, convertido pela mesma cotação Yuan/Real escolhida)
+  const freteBRL = freteEscolhido.taxaYuan / fxEscolhida;
+  const frete = { blocos: null, pesoConsiderado: pesoG, nomeMetodo: freteEscolhido.nome, prazo: freteEscolhido.prazo };
 
   // seguro
   const seguroBRL = (produtoBRL + freteBRL) * 0.03;
@@ -755,9 +828,7 @@ function calcular() {
     }
   }
 
-  const volAlerta = frete.pesoVolumetricoG > pesoG
-    ? `<div class="badge warn">Peso volumétrico (${frete.pesoVolumetricoG.toFixed(0)}g) maior que o real — usado no cálculo</div>`
-    : '';
+  const volAlerta = '';
   const isentoBadge = declUSD <= 50
     ? `<div class="badge ok">Isento de II (declaração ≤ US$ 50)</div>`
     : `<div class="badge warn">II de 60% aplicado (declaração > US$ 50)</div>`;
@@ -769,7 +840,7 @@ function calcular() {
         <span class="value">R$ ${produtoBRL.toFixed(2)}</span>
       </div>
       <div class="receipt-row">
-        <span class="label">Frete (${frete.blocos} blocos de 100g = US$ ${frete.freteUSD.toFixed(2)})<span class="sub">peso considerado: ${frete.pesoConsiderado.toFixed(0)}g</span></span>
+        <span class="label">Frete (${frete.nomeMetodo})<span class="sub">prazo: ${frete.prazo} dias · ¥${freteEscolhido.taxaYuan.toFixed(2)}</span></span>
         <span class="value">R$ ${freteBRL.toFixed(2)}</span>
       </div>
       <div class="receipt-row">
