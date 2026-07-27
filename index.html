@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jr Imports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0E1015;
+    --panel: #1A1E27;
+    --panel-raised: #232833;
+    --line: #2E333E;
+    --text: #E8E6E1;
+    --text-dim: #8B909C;
+    --text-faint: #565C68;
+    --amber: #D4A24E;
+    --amber-soft: rgba(212, 162, 78, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .glow-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--amber-soft), transparent 70%);
+    transition: background 0.15s ease-out;
+    z-index: 0;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-mark {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    border: 1px solid rgba(212, 162, 78, 0.35);
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(42px, 8vw, 84px);
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(180deg, #FFFFFF, #C9CDD6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-title span {
+    background: linear-gradient(120deg, var(--amber), #F0C878);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-tagline {
+    font-size: clamp(15px, 2vw, 19px);
+    color: var(--text-dim);
+    margin: 18px 0 42px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-start {
+    background: var(--amber);
+    color: #1A1508;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 15px 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 0 0 0 rgba(212,162,78,0.4);
+  }
+  .btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(212,162,78,0.45);
+  }
+  .btn-start:active { transform: translateY(0); }
+
+  .hero-footer {
+    position: absolute;
+    bottom: 28px;
+    font-size: 11px;
+    color: var(--text-faint);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    z-index: 2;
+  }
+
+  #select {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  #select.active { display: flex; }
+  #hero.hidden { display: none; }
+
+  .select-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .select-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .select-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .select-sub {
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin-top: 8px;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
+    gap: 16px;
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .platform-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 22px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .platform-card.active-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+    background: var(--panel-raised);
+  }
+
+  .platform-card.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .platform-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: var(--amber-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+
+  .platform-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16.5px;
+  }
+
+  .platform-desc {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    line-height: 1.4;
+  }
+
+  .platform-tag {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-faint);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 4px;
+  }
+
+  .back-link {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .back-link:hover { color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<div class="glow-layer" id="glow"></div>
+<div class="grain"></div>
+
+<div id="hero">
+  <div class="hero-content">
+    <div class="hero-mark">Importação sem dor de cabeça</div>
+    <h1 class="hero-title">Jr <span>Imports</span></h1>
+    <p class="hero-tagline">Facilitando sua importação, do pedido à porta de casa.</p>
+    <button class="btn-start" onclick="goToSelect()">Iniciar</button>
+  </div>
+  <div class="hero-footer">JR IMPORTS © 2026</div>
+</div>
+
+<div id="select">
+  <a class="back-link" onclick="goToHero()">← voltar</a>
+  <div class="select-header">
+    <div class="select-eyebrow">Escolha a plataforma</div>
+    <h2 class="select-title">Qual agente você usa?</h2>
+    <p class="select-sub">Selecione pra abrir a calculadora de importação certa</p>
+  </div>
+  <div class="platform-grid">
+    <a class="platform-card active-card" href="cssbuy.html">
+      <div class="platform-icon">CS</div>
+      <div class="platform-name">CSSBuy</div>
+      <div class="platform-desc">Frete, seguro e ICMS calculados automaticamente</div>
+      <div class="platform-tag">disponível</div>
+    </a>
+    <div class="platform-card disabled">
+      <div class="platform-icon">?</div>
+      <div class="platform-name">Em breve</div>
+      <div class="platform-desc">Novas plataformas chegando</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const glow = document.getElementById('glow');
+  window.addEventListener('mousemove', (e) => {
+    glow.style.setProperty('--mx', e.clientX + 'px');
+    glow.style.setProperty('--my', e.clientY + 'px');
+  });
+
+  function goToSelect() {
+    document.getElementById('hero').classList.add('hidden');
+    document.getElementById('select').classList.add('active');
+  }
+  function goToHero() {
+    document.getElementById('select').classList.remove('active');
+    document.getElementById('hero').classList.remove('hidden');
+  }
+</script>
+
+</body>
+</html>
