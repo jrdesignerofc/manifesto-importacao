@@ -11,7 +11,9 @@
     --bg: #14171C;
     --panel: #1C2028;
     --panel-raised: #232833;
+    --panel-sunken: #171A21;
     --line: #2E333E;
+    --line-soft: #262B35;
     --text: #E8E6E1;
     --text-dim: #8B909C;
     --text-faint: #5C6270;
@@ -39,7 +41,6 @@
     padding: 28px 24px 80px;
   }
 
-  /* ---------- HEADER ---------- */
   header {
     display: flex;
     justify-content: space-between;
@@ -51,20 +52,28 @@
     gap: 16px;
   }
 
+  .back-link {
+    color: var(--text-faint);
+    font-size: 11px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .back-link:hover { color: var(--text-dim); }
+
   .brand {
     display: flex;
-    align-items: baseline;
-    gap: 14px;
+    align-items: center;
+    gap: 12px;
   }
 
-  .brand-mark {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--amber);
-    border: 1px solid var(--amber-dim);
-    padding: 3px 8px;
-    border-radius: 3px;
-    letter-spacing: 0.08em;
+  .brand img {
+    height: 26px;
+    width: auto;
+    border-radius: 4px;
+    background: #fff;
+    padding: 3px 6px;
   }
 
   h1 {
@@ -78,7 +87,7 @@
   .tagline {
     font-size: 12.5px;
     color: var(--text-dim);
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
   .fx-status {
@@ -91,7 +100,6 @@
 
   .fx-status b { color: var(--text-dim); font-weight: 600; }
 
-  /* ---------- LAYOUT ---------- */
   .grid {
     display: grid;
     grid-template-columns: 1fr 1.05fr;
@@ -131,10 +139,17 @@
     border-radius: 1px;
   }
 
-  /* ---------- FORM ---------- */
-  .field {
-    margin-bottom: 16px;
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-faint);
+    margin: 26px 0 12px;
   }
+
+  .field { margin-bottom: 16px; }
 
   .field label {
     display: block;
@@ -170,14 +185,9 @@
   }
 
   input::placeholder { color: var(--text-faint); }
+  input:focus { border-color: var(--amber-dim); }
 
-  input:focus {
-    border-color: var(--amber-dim);
-  }
-
-  .unit-input {
-    position: relative;
-  }
+  .unit-input { position: relative; }
   .unit-input span {
     position: absolute;
     right: 12px;
@@ -300,13 +310,90 @@
     padding: 7px 9px;
   }
 
-  .fx-manual-toggle {
-    font-size: 10.5px;
-    color: var(--amber);
+  /* ---------- SERVICE CARDS (checkbox pills) ---------- */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .service-card {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--panel-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
     cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .service-card:hover { border-color: var(--text-faint); }
+  .service-card.checked {
+    border-color: var(--amber-dim);
+    background: linear-gradient(180deg, rgba(212,162,78,0.07), var(--panel-raised));
+  }
+  .service-card input {
+    accent-color: var(--amber);
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .service-card-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+  .service-card-name {
+    font-size: 12.5px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .service-card-price {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .photos-box {
+    background: var(--panel-sunken);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    padding: 12px;
     margin-top: 8px;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  }
+  .photos-box .service-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .custom-photo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--line-soft);
+    margin-top: 8px;
+    padding-top: 10px;
+  }
+  .custom-photo-row label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: 1;
+    cursor: pointer;
+    font-size: 12.5px;
+    color: var(--text);
+  }
+  .custom-photo-row input[type=checkbox] {
+    accent-color: var(--amber);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+  .custom-photo-row input[type=number] {
+    width: 58px;
+    padding: 6px 8px;
+    font-size: 12.5px;
+    display: none;
   }
 
   /* ---------- RECEIPT ---------- */
@@ -329,7 +416,7 @@
   .receipt-row:last-of-type { border-bottom: none; }
 
   .receipt-row .label { color: var(--text-dim); }
-  .receipt-row .value { color: var(--text); font-weight: 500; }
+  .receipt-row .value { color: var(--text); font-weight: 500; white-space: nowrap; padding-left: 12px; }
   .receipt-row .sub { font-size: 11px; color: var(--text-faint); display: block; margin-top: 2px; font-family: 'Inter', sans-serif;}
 
   .receipt-total {
@@ -377,16 +464,8 @@
   }
   .empty-state svg { opacity: 0.3; margin-bottom: 14px; }
 
-  /* ---------- HISTORY ---------- */
-  .history-section {
-    margin-top: 22px;
-  }
-
-  .history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .history-section { margin-top: 22px; }
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
 
   .history-item {
     background: var(--panel-raised);
@@ -403,32 +482,10 @@
     .history-item { grid-template-columns: 1fr; }
   }
 
-  .history-item .name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .history-item .meta {
-    font-size: 11px;
-    color: var(--text-faint);
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 2px;
-  }
-  .history-item .total {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 600;
-    color: var(--amber);
-    font-size: 15px;
-    white-space: nowrap;
-  }
-  .history-item .del {
-    background: none;
-    border: none;
-    color: var(--text-faint);
-    cursor: pointer;
-    font-size: 16px;
-    padding: 4px 8px;
-  }
+  .history-item .name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--text); }
+  .history-item .meta { font-size: 11px; color: var(--text-faint); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+  .history-item .total { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--amber); font-size: 15px; white-space: nowrap; }
+  .history-item .del { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 16px; padding: 4px 8px; }
   .history-item .del:hover { color: var(--red); }
 
   .history-empty {
@@ -449,12 +506,12 @@
 <div class="wrap">
   <header>
     <div>
-      <a href="index.html" style="color:var(--text-faint); font-size:11px; text-decoration:none; font-family:'JetBrains Mono', monospace; display:inline-block; margin-bottom:8px;">← voltar</a>
+      <a href="index.html" class="back-link">← voltar</a>
       <div class="brand">
-        <span class="brand-mark">CSSBuy</span>
+        <img src="https://static.cssbuy.com/skin/images/logo.png" alt="CSSBuy" onerror="this.style.display='none'">
         <h1>Jr Imports</h1>
       </div>
-      <div class="tagline">Painel de custo total de importação — China → Brasil</div>
+      <div class="tagline">Painel de custo total de importação — China → Brasil, via CSSBuy</div>
     </div>
     <div class="fx-status" id="fxStatus">verificando cotações...</div>
   </header>
@@ -496,69 +553,103 @@
         <div class="hint">Volumétrico = (C × L × A) ÷ 8000 — usa o maior entre real e volumétrico</div>
       </div>
 
-      <p class="panel-title" style="margin-top: 24px;">Serviços adicionais (warehouse)</p>
+      <p class="section-title">Serviços adicionais no armazém</p>
 
-      <div class="field" style="display:flex; flex-direction:column; gap:9px;">
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Protection box" data-preco="0.74" style="width:auto;">
-          Add protection box <span style="color:var(--text-faint);">— $0.74</span>
+      <div class="service-grid" id="serviceGrid">
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Caixa de proteção" data-preco="0.74">
+          <div class="service-card-text">
+            <span class="service-card-name">Caixa de proteção</span>
+            <span class="service-card-price">US$ 0,74</span>
+          </div>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Gas column pack" data-preco="0.89" style="width:auto;">
-          Add gas column pack <span style="color:var(--text-faint);">— $0.89</span>
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Embalagem a vácuo" data-preco="0.89">
+          <div class="service-card-text">
+            <span class="service-card-name">Embalagem a vácuo</span>
+            <span class="service-card-price">US$ 0,89</span>
+          </div>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Measure size" data-preco="0.59" style="width:auto;">
-          Measure size <span style="color:var(--text-faint);">— $0.59</span>
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Medir tamanho" data-preco="0.59">
+          <div class="service-card-text">
+            <span class="service-card-name">Medir tamanho</span>
+            <span class="service-card-price">US$ 0,59</span>
+          </div>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Take video" data-preco="0.89" style="width:auto;">
-          Take video <span style="color:var(--text-faint);">— $0.89</span>
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Gravar vídeo" data-preco="0.89">
+          <div class="service-card-text">
+            <span class="service-card-name">Gravar vídeo</span>
+            <span class="service-card-price">US$ 0,89</span>
+          </div>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Priority purchase" data-preco="0.59" style="width:auto;">
-          Priority purchase <span style="color:var(--text-faint);">— $0.59</span>
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Compra prioritária" data-preco="0.59">
+          <div class="service-card-text">
+            <span class="service-card-name">Compra prioritária</span>
+            <span class="service-card-price">US$ 0,59</span>
+          </div>
         </label>
-        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer;">
-          <input type="checkbox" class="servico-extra" data-nome="Shoe tree" data-preco="0.74" style="width:auto;">
-          Shoe tree <span style="color:var(--text-faint);">— $0.74</span>
+        <label class="service-card">
+          <input type="checkbox" class="servico-extra" data-nome="Forma para calçado" data-preco="0.74">
+          <div class="service-card-text">
+            <span class="service-card-name">Forma p/ calçado</span>
+            <span class="service-card-price">US$ 0,74</span>
+          </div>
         </label>
       </div>
 
-      <div class="field" style="margin-top:14px;">
-        <label style="margin-bottom:8px;">Take photos</label>
-        <div style="display:flex; flex-direction:column; gap:8px; background:var(--panel-raised); border:1px solid var(--line); border-radius:8px; padding:12px 14px;">
-          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
-            <input type="checkbox" class="servico-extra" data-nome="Size Tag" data-preco="0.15" style="width:auto;">
-            Size Tag <span style="color:var(--text-faint);">— $0.15</span>
+      <p class="section-title" style="margin-bottom:6px;">Fotos do produto</p>
+      <div class="photos-box">
+        <div class="service-grid">
+          <label class="service-card">
+            <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta" data-preco="0.15">
+            <div class="service-card-text">
+              <span class="service-card-name">Etiqueta de tamanho</span>
+              <span class="service-card-price">US$ 0,15</span>
+            </div>
           </label>
-          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
-            <input type="checkbox" class="servico-extra" data-nome="Wash Tag" data-preco="0.15" style="width:auto;">
-            Wash Tag <span style="color:var(--text-faint);">— $0.15</span>
+          <label class="service-card">
+            <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta de lavagem" data-preco="0.15">
+            <div class="service-card-text">
+              <span class="service-card-name">Etiqueta de lavagem</span>
+              <span class="service-card-price">US$ 0,15</span>
+            </div>
           </label>
-          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
-            <input type="checkbox" class="servico-extra" data-nome="Close-up Material" data-preco="0.15" style="width:auto;">
-            Close-up Material <span style="color:var(--text-faint);">— $0.15</span>
+          <label class="service-card">
+            <input type="checkbox" class="servico-extra" data-nome="Close no material" data-preco="0.15">
+            <div class="service-card-text">
+              <span class="service-card-name">Close no material</span>
+              <span class="service-card-price">US$ 0,15</span>
+            </div>
           </label>
-          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
-            <input type="checkbox" class="servico-extra" data-nome="Close-up Logo" data-preco="0.15" style="width:auto;">
-            Close-up Logo <span style="color:var(--text-faint);">— $0.15</span>
+          <label class="service-card">
+            <input type="checkbox" class="servico-extra" data-nome="Close na logo" data-preco="0.15">
+            <div class="service-card-text">
+              <span class="service-card-name">Close na logo</span>
+              <span class="service-card-price">US$ 0,15</span>
+            </div>
           </label>
-          <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); cursor:pointer;">
-            <input type="checkbox" class="servico-extra" data-nome="Standard QC Set" data-preco="0.44" style="width:auto;">
-            Standard QC Set (até 10 fotos) <span style="color:var(--text-faint);">— $0.44</span>
+          <label class="service-card">
+            <input type="checkbox" class="servico-extra" data-nome="Kit QC padrão" data-preco="0.44">
+            <div class="service-card-text">
+              <span class="service-card-name">Kit QC padrão (até 10 fotos)</span>
+              <span class="service-card-price">US$ 0,44</span>
+            </div>
           </label>
-          <div style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text); border-top:1px solid var(--line); padding-top:8px; margin-top:2px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; flex:1;">
-              <input type="checkbox" id="customPhotoCheck" onchange="toggleCustomPhotoQty()" style="width:auto;">
-              Custom Photo <span style="color:var(--text-faint);">— $0.15 cada</span>
-            </label>
-            <input type="number" id="customPhotoQty" value="1" min="1" style="width:60px; padding:6px 8px; display:none;">
-          </div>
+        </div>
+        <div class="custom-photo-row">
+          <label>
+            <input type="checkbox" id="customPhotoCheck" onchange="toggleCustomPhotoQty()">
+            <span class="service-card-name">Foto personalizada</span>
+            <span class="service-card-price" style="margin-left:6px;">US$ 0,15 cada</span>
+          </label>
+          <input type="number" id="customPhotoQty" value="1" min="1">
         </div>
       </div>
 
-      <div class="field">
+      <div class="field" style="margin-top:20px;">
         <label for="declValue">Valor declarado</label>
         <div class="unit-input">
           <input type="number" id="declValue" placeholder="0,00" step="0.01" value="12">
@@ -569,12 +660,10 @@
 
       <p class="panel-title" style="margin-top: 24px;">Cotações</p>
 
-      <div class="fx-cards" id="fxCards">
-        <!-- populated by JS -->
-      </div>
+      <div class="fx-cards" id="fxCards"></div>
 
       <div class="field">
-        <label for="usdRate">Dólar comercial (frete + ICMS) <span id="usdSrc" style="color:var(--text-faint); font-weight:400;"></span></label>
+        <label for="usdRate">Dólar comercial (serviços + ICMS) <span id="usdSrc" style="color:var(--text-faint); font-weight:400;"></span></label>
         <div class="unit-input">
           <input type="number" id="usdRate" placeholder="0.00" step="0.0001">
           <span>R$/US$</span>
@@ -592,7 +681,7 @@
       </div>
 
       <button class="btn" onclick="calcular()">Calcular importação</button>
-      <button class="btn-ghost" style="margin-top:8px;" onclick="buscarCotacoes()">↻ Atualizar cotações</button>
+      <button class="btn-ghost" style="width:100%; margin-top:8px;" onclick="buscarCotacoes()">↻ Atualizar cotações</button>
     </div>
 
     <!-- RESULT PANEL -->
@@ -751,14 +840,24 @@ function toggleCustomPhotoQty() {
   qty.style.display = check.checked ? 'inline-block' : 'none';
 }
 
+// realça visualmente os cards de serviço quando marcados
+document.addEventListener('change', (e) => {
+  if (e.target.classList && e.target.classList.contains('servico-extra')) {
+    const card = e.target.closest('.service-card');
+    if (card) card.classList.toggle('checked', e.target.checked);
+  }
+});
+
 function calcularServicosExtras() {
+  // todos os preços de referência estão em USD, mas são de fato pagos em Yuan.
+  // por isso: USD -> converte pra Yuan (via câmbio comercial) -> depois pra Real (via cotação Cayuan/ByteMax escolhida)
   let totalUSD = 0;
   const itens = [];
 
   document.querySelectorAll('.servico-extra:checked').forEach((el) => {
     const preco = parseFloat(el.dataset.preco);
     totalUSD += preco;
-    itens.push(`${el.dataset.nome} ($${preco.toFixed(2)})`);
+    itens.push(`${el.dataset.nome} (US$ ${preco.toFixed(2)})`);
   });
 
   const customCheck = document.getElementById('customPhotoCheck');
@@ -766,7 +865,7 @@ function calcularServicosExtras() {
     const qty = parseInt(document.getElementById('customPhotoQty').value) || 1;
     const subtotal = qty * 0.15;
     totalUSD += subtotal;
-    itens.push(`Custom Photo x${qty} ($${subtotal.toFixed(2)})`);
+    itens.push(`Foto personalizada x${qty} (US$ ${subtotal.toFixed(2)})`);
   }
 
   return { totalUSD, itens };
@@ -806,14 +905,14 @@ function calcular() {
     return;
   }
 
-  // produto
+  // produto: yuan direto -> real
   const produtoBRL = valorYuan / fxEscolhida;
 
-  // frete (tabela fixa CSSBuy: $8,89 primeiro bloco de 100g + $2,00 por bloco adicional)
+  // frete: tabela fixa CSSBuy, referência em USD, convertido direto pra Real pelo câmbio comercial
   const frete = calcularFrete(pesoG, dimL, dimW, dimH);
   const freteBRL = frete.freteUSD * usdRate;
 
-  // serviços adicionais de warehouse (cobrados em USD)
+  // serviços extras: mesma lógica (preço de referência em USD, convertido direto pra Real)
   const servicosExtras = calcularServicosExtras();
   const servicosBRL = servicosExtras.totalUSD * usdRate;
 
@@ -832,7 +931,6 @@ function calcular() {
 
   const totalBRL = produtoBRL + freteBRL + servicosBRL + seguroBRL + iiBRL + icmsBRL;
 
-  // comparação com a outra cotação
   let comparacaoHtml = '';
   if (fxCayuan && fxBytemax) {
     const outraKey = selectedFx === 'cayuan' ? 'bytemax' : 'cayuan';
@@ -856,7 +954,7 @@ function calcular() {
 
   const servicosRowHtml = servicosExtras.itens.length > 0 ? `
       <div class="receipt-row">
-        <span class="label">Serviços adicionais (warehouse)<span class="sub">${servicosExtras.itens.join(', ')}</span></span>
+        <span class="label">Serviços adicionais<span class="sub">${servicosExtras.itens.join(', ')}</span></span>
         <span class="value">R$ ${servicosBRL.toFixed(2)}</span>
       </div>` : '';
 
@@ -867,7 +965,7 @@ function calcular() {
         <span class="value">R$ ${produtoBRL.toFixed(2)}</span>
       </div>
       <div class="receipt-row">
-        <span class="label">Frete (${frete.blocos} blocos de 100g = US$ ${frete.freteUSD.toFixed(2)})<span class="sub">peso considerado: ${frete.pesoConsiderado.toFixed(0)}g</span></span>
+        <span class="label">Frete (${frete.blocos} blocos de 100g)<span class="sub">peso considerado: ${frete.pesoConsiderado.toFixed(0)}g · referência US$ ${frete.freteUSD.toFixed(2)}</span></span>
         <span class="value">R$ ${freteBRL.toFixed(2)}</span>
       </div>${servicosRowHtml}
       <div class="receipt-row">
@@ -898,7 +996,7 @@ function calcular() {
   document.getElementById('resultArea').innerHTML = resultHtml;
 
   history.unshift({
-    nome, totalBRL, produtoBRL, freteBRL,
+    nome, totalBRL,
     fonte: selectedFx === 'cayuan' ? 'Cayuan' : 'ByteMax',
     data: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
   });
@@ -928,7 +1026,6 @@ function removeHistory(i) {
   renderHistory();
 }
 
-// init
 renderFxCards();
 buscarCotacoes();
 </script>
