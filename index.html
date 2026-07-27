@@ -8,15 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0E1015;
-    --panel: #1A1E27;
-    --panel-raised: #232833;
-    --line: #2E333E;
-    --text: #E8E6E1;
-    --text-dim: #8B909C;
-    --text-faint: #565C68;
-    --amber: #D4A24E;
-    --amber-soft: rgba(212, 162, 78, 0.14);
+    --bg: #0A0808;
+    --panel: #161010;
+    --panel-raised: #1D1414;
+    --line: #2E1F1E;
+    --text: #F0EBE8;
+    --text-dim: #9C8F8C;
+    --text-faint: #5E5352;
+    --accent: #E31E24;
+    --accent-soft: rgba(227, 30, 36, 0.16);
   }
 
   * { box-sizing: border-box; }
@@ -44,7 +44,7 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--amber-soft), transparent 70%);
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 70%);
     transition: background 0.15s ease-out;
     z-index: 0;
   }
@@ -53,7 +53,7 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.025;
+    opacity: 0.05;
     z-index: 1;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
@@ -68,8 +68,8 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.18em;
-    color: var(--amber);
-    border: 1px solid rgba(212, 162, 78, 0.35);
+    color: var(--accent);
+    border: 1px solid rgba(227, 30, 36, 0.35);
     padding: 5px 12px;
     border-radius: 20px;
     margin-bottom: 22px;
@@ -90,7 +90,7 @@
   }
 
   .hero-title span {
-    background: linear-gradient(120deg, var(--amber), #F0C878);
+    background: linear-gradient(120deg, var(--accent), #FF6B5B);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -105,8 +105,8 @@
   }
 
   .btn-start {
-    background: var(--amber);
-    color: #1A1508;
+    background: var(--accent);
+    color: #FFFFFF;
     border: none;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
@@ -115,11 +115,11 @@
     border-radius: 999px;
     cursor: pointer;
     transition: transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 0 0 0 rgba(212,162,78,0.4);
+    box-shadow: 0 0 0 0 rgba(227,30,36,0.4);
   }
   .btn-start:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px -4px rgba(212,162,78,0.45);
+    box-shadow: 0 8px 24px -4px rgba(227,30,36,0.45);
   }
   .btn-start:active { transform: translateY(0); }
 
@@ -155,7 +155,7 @@
   .select-eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: var(--amber);
+    color: var(--accent);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -199,7 +199,7 @@
   }
 
   .platform-card.active-card:hover {
-    border-color: var(--amber);
+    border-color: var(--accent);
     transform: translateY(-3px);
     background: var(--panel-raised);
   }
@@ -213,14 +213,14 @@
     width: 46px;
     height: 46px;
     border-radius: 12px;
-    background: var(--amber-soft);
+    background: var(--accent-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
     font-size: 18px;
-    color: var(--amber);
+    color: var(--accent);
     margin-bottom: 4px;
     overflow: hidden;
   }
