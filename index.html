@@ -222,6 +222,15 @@
     font-size: 18px;
     color: var(--amber);
     margin-bottom: 4px;
+    overflow: hidden;
+  }
+
+  .platform-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+    padding: 6px;
   }
 
   .platform-name {
@@ -283,7 +292,7 @@
   </div>
   <div class="platform-grid">
     <a class="platform-card active-card" href="cssbuy.html">
-      <div class="platform-icon">CS</div>
+      <div class="platform-icon"><img src="logos/cssbuy.png" alt="CSSBuy" onerror="this.parentElement.textContent='CS'"></div>
       <div class="platform-name">CSSBuy</div>
       <div class="platform-desc">Frete, seguro e ICMS calculados automaticamente</div>
       <div class="platform-tag">disponível</div>

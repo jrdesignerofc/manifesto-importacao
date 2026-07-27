@@ -508,7 +508,7 @@
     <div>
       <a href="index.html" class="back-link">← voltar</a>
       <div class="brand">
-        <img src="https://static.cssbuy.com/skin/images/logo.png" alt="CSSBuy" onerror="this.style.display='none'">
+        <img src="logos/cssbuy.png" alt="CSSBuy" onerror="this.style.display='none'">
         <h1>Jr Imports</h1>
       </div>
       <div class="tagline">Painel de custo total de importação — China → Brasil, via CSSBuy</div>
@@ -777,13 +777,16 @@ function renderFxCards() {
     ? (fxData.cayuan.value >= fxData.bytemax.value ? 'cayuan' : 'bytemax')
     : null;
 
-  const cardHtml = (key, label, fx) => {
+  const cardHtml = (key, label, fx, logoPath) => {
     const isSelected = selectedFx === key;
     const isWinner = winner === key;
     const val = fx.value !== null ? fx.value.toFixed(4) : '—';
     return `
       <div class="fx-card ${isSelected ? 'selected' : ''} ${isWinner ? 'winner' : ''}" onclick="selectFx('${key}')">
-        <div class="fx-card-name">${label}</div>
+        <div class="fx-card-name" style="display:flex; align-items:center; gap:6px;">
+          <img src="${logoPath}" alt="${label}" style="width:16px; height:16px; object-fit:contain; border-radius:3px; background:#fff; padding:1px;" onerror="this.style.display='none'">
+          ${label}
+        </div>
         <div class="fx-card-value">¥ ${val}</div>
         <div class="fx-card-meta">${fx.ok ? 'automática' : 'manual · toque pra editar'}</div>
         ${!fx.ok ? `<input type="number" step="0.0001" placeholder="Digite ¥/R$" onclick="event.stopPropagation()" onchange="setManualFx('${key}', this.value)">` : ''}
@@ -792,8 +795,8 @@ function renderFxCards() {
   };
 
   document.getElementById('fxCards').innerHTML =
-    cardHtml('cayuan', 'Cayuan', fxData.cayuan) +
-    cardHtml('bytemax', 'ByteMax', fxData.bytemax);
+    cardHtml('cayuan', 'Cayuan', fxData.cayuan, 'logos/cayuan.png') +
+    cardHtml('bytemax', 'ByteMax', fxData.bytemax, 'logos/bytemax.png');
 }
 
 function selectFx(key) {
