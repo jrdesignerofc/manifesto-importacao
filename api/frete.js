@@ -29,10 +29,19 @@ export default async function handler(req, res) {
     });
 
     if (!upstream.ok) {
-      return res.status(502).json({ error: 'cssbuy_upstream_error', status: upstream.status });
+      const bodyText = await upstream.text();
+      console.log('CSSBuy respondeu com erro. Status:', upstream.status, 'Corpo:', bodyText.slice(0, 500));
+      return res.status(502).json({ error: 'cssbuy_upstream_error', status: upstream.status, body: bodyText.slice(0, 500) });
     }
 
-    const data = await upstream.json();
+    const rawText = await upstream.text();
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseErr) {
+      console.log('CSSBuy não retornou JSON válido. Corpo recebido:', rawText.slice(0, 500));
+      return res.status(502).json({ error: 'cssbuy_invalid_json', body: rawText.slice(0, 500) });
+    }
 
     if (!data.success) {
       return res.status(502).json({ error: 'cssbuy_api_error', raw: data });
@@ -53,6 +62,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ fretes });
   } catch (err) {
-    return res.status(502).json({ error: 'cssbuy_fetch_failed', message: String(err) });
+    console.log('Erro ao buscar frete no CSSBuy:', err.name, err.message);
+    return res.status(502).json({ error: 'cssbuy_fetch_failed', errorName: err.name, message: String(err.message || err) });
   }
 }

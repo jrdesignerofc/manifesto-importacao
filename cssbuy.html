@@ -711,13 +711,14 @@ async function buscarFretes() {
     const data = await res.json();
 
     if (data.error || !data.fretes) {
-      throw new Error(data.error || 'sem dados');
+      console.error('Erro ao buscar fretes:', data);
+      throw new Error(data.body || data.message || data.error || 'sem dados');
     }
 
     fretesDisponiveis = data.fretes.filter(f => f.suportado);
     renderFreteSelect();
   } catch (e) {
-    alert('Não foi possível buscar os fretes automaticamente. Confira sua conexão ou tente de novo em instantes.');
+    alert('Não foi possível buscar os fretes automaticamente.\n\nDetalhe técnico: ' + e.message);
     fretesDisponiveis = [];
   } finally {
     btn.textContent = textoOriginal;
