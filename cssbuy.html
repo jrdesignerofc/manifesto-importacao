@@ -357,6 +357,54 @@
     font-family: 'JetBrains Mono', monospace;
   }
 
+  .extras-accordion {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel-raised);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .extras-accordion summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    user-select: none;
+  }
+  .extras-accordion summary::-webkit-details-marker { display: none; }
+  .extras-accordion summary::after {
+    content: '▾';
+    color: var(--text-faint);
+    font-size: 11px;
+    margin-left: auto;
+    transition: transform 0.15s;
+  }
+  .extras-accordion[open] summary::after { transform: rotate(180deg); }
+  .extras-accordion[open] summary { border-bottom: 1px solid var(--line); }
+
+  .extras-summary-title { display: flex; align-items: center; gap: 8px; }
+  .extras-summary-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    background: var(--panel-sunken);
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-right: 10px;
+  }
+  .extras-summary-count.active {
+    color: var(--amber);
+    background: rgba(212,162,78,0.12);
+  }
+
+  .extras-body { padding: 16px 14px 14px; }
+
   .photos-box {
     background: var(--panel-sunken);
     border: 1px solid var(--line-soft);
@@ -553,101 +601,110 @@
         <div class="hint">Volumétrico = (C × L × A) ÷ 8000 — usa o maior entre real e volumétrico</div>
       </div>
 
-      <p class="section-title">Serviços adicionais no armazém</p>
+      <details class="extras-accordion" id="extrasAccordion">
+        <summary>
+          <span class="extras-summary-title">Serviços adicionais e fotos</span>
+          <span class="extras-summary-count" id="extrasCount">opcional</span>
+        </summary>
 
-      <div class="service-grid" id="serviceGrid">
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Caixa de proteção" data-preco="0.74">
-          <div class="service-card-text">
-            <span class="service-card-name">Caixa de proteção</span>
-            <span class="service-card-price">US$ 0,74</span>
-          </div>
-        </label>
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Embalagem a vácuo" data-preco="0.89">
-          <div class="service-card-text">
-            <span class="service-card-name">Embalagem a vácuo</span>
-            <span class="service-card-price">US$ 0,89</span>
-          </div>
-        </label>
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Medir tamanho" data-preco="0.59">
-          <div class="service-card-text">
-            <span class="service-card-name">Medir tamanho</span>
-            <span class="service-card-price">US$ 0,59</span>
-          </div>
-        </label>
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Gravar vídeo" data-preco="0.89">
-          <div class="service-card-text">
-            <span class="service-card-name">Gravar vídeo</span>
-            <span class="service-card-price">US$ 0,89</span>
-          </div>
-        </label>
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Compra prioritária" data-preco="0.59">
-          <div class="service-card-text">
-            <span class="service-card-name">Compra prioritária</span>
-            <span class="service-card-price">US$ 0,59</span>
-          </div>
-        </label>
-        <label class="service-card">
-          <input type="checkbox" class="servico-extra" data-nome="Forma para calçado" data-preco="0.74">
-          <div class="service-card-text">
-            <span class="service-card-name">Forma p/ calçado</span>
-            <span class="service-card-price">US$ 0,74</span>
-          </div>
-        </label>
-      </div>
+        <div class="extras-body">
+          <p class="section-title" style="margin-top:14px;">Serviços adicionais no armazém</p>
 
-      <p class="section-title" style="margin-bottom:6px;">Fotos do produto</p>
-      <div class="photos-box">
-        <div class="service-grid">
-          <label class="service-card">
-            <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta" data-preco="0.15">
-            <div class="service-card-text">
-              <span class="service-card-name">Etiqueta de tamanho</span>
-              <span class="service-card-price">US$ 0,15</span>
+          <div class="service-grid" id="serviceGrid">
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Caixa de proteção" data-preco="0.74">
+              <div class="service-card-text">
+                <span class="service-card-name">Caixa de proteção</span>
+                <span class="service-card-price">US$ 0,74</span>
+              </div>
+            </label>
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Embalagem a vácuo" data-preco="0.89">
+              <div class="service-card-text">
+                <span class="service-card-name">Embalagem a vácuo</span>
+                <span class="service-card-price">US$ 0,89</span>
+              </div>
+            </label>
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Medir tamanho" data-preco="0.59">
+              <div class="service-card-text">
+                <span class="service-card-name">Medir tamanho</span>
+                <span class="service-card-price">US$ 0,59</span>
+              </div>
+            </label>
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Gravar vídeo" data-preco="0.89">
+              <div class="service-card-text">
+                <span class="service-card-name">Gravar vídeo</span>
+                <span class="service-card-price">US$ 0,89</span>
+              </div>
+            </label>
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Compra prioritária" data-preco="0.59">
+              <div class="service-card-text">
+                <span class="service-card-name">Compra prioritária</span>
+                <span class="service-card-price">US$ 0,59</span>
+              </div>
+            </label>
+            <label class="service-card">
+              <input type="checkbox" class="servico-extra" data-nome="Forma para calçado" data-preco="0.74">
+              <div class="service-card-text">
+                <span class="service-card-name">Forma p/ calçado</span>
+                <span class="service-card-price">US$ 0,74</span>
+              </div>
+            </label>
+          </div>
+
+          <p class="section-title" style="margin-bottom:6px;">Fotos do produto</p>
+          <div class="photos-box">
+            <div class="service-grid">
+              <label class="service-card">
+                <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta" data-preco="0.15">
+                <div class="service-card-text">
+                  <span class="service-card-name">Etiqueta de tamanho</span>
+                  <span class="service-card-price">US$ 0,15</span>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta de lavagem" data-preco="0.15">
+                <div class="service-card-text">
+                  <span class="service-card-name">Etiqueta de lavagem</span>
+                  <span class="service-card-price">US$ 0,15</span>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" class="servico-extra" data-nome="Close no material" data-preco="0.15">
+                <div class="service-card-text">
+                  <span class="service-card-name">Close no material</span>
+                  <span class="service-card-price">US$ 0,15</span>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" class="servico-extra" data-nome="Close na logo" data-preco="0.15">
+                <div class="service-card-text">
+                  <span class="service-card-name">Close na logo</span>
+                  <span class="service-card-price">US$ 0,15</span>
+                </div>
+              </label>
+              <label class="service-card">
+                <input type="checkbox" class="servico-extra" data-nome="Kit QC padrão" data-preco="0.44">
+                <div class="service-card-text">
+                  <span class="service-card-name">Kit QC padrão (até 10 fotos)</span>
+                  <span class="service-card-price">US$ 0,44</span>
+                </div>
+              </label>
             </div>
-          </label>
-          <label class="service-card">
-            <input type="checkbox" class="servico-extra" data-nome="Foto da etiqueta de lavagem" data-preco="0.15">
-            <div class="service-card-text">
-              <span class="service-card-name">Etiqueta de lavagem</span>
-              <span class="service-card-price">US$ 0,15</span>
+            <div class="custom-photo-row">
+              <label>
+                <input type="checkbox" id="customPhotoCheck" onchange="toggleCustomPhotoQty()">
+                <span class="service-card-name">Foto personalizada</span>
+                <span class="service-card-price" style="margin-left:6px;">US$ 0,15 cada</span>
+              </label>
+              <input type="number" id="customPhotoQty" value="1" min="1">
             </div>
-          </label>
-          <label class="service-card">
-            <input type="checkbox" class="servico-extra" data-nome="Close no material" data-preco="0.15">
-            <div class="service-card-text">
-              <span class="service-card-name">Close no material</span>
-              <span class="service-card-price">US$ 0,15</span>
-            </div>
-          </label>
-          <label class="service-card">
-            <input type="checkbox" class="servico-extra" data-nome="Close na logo" data-preco="0.15">
-            <div class="service-card-text">
-              <span class="service-card-name">Close na logo</span>
-              <span class="service-card-price">US$ 0,15</span>
-            </div>
-          </label>
-          <label class="service-card">
-            <input type="checkbox" class="servico-extra" data-nome="Kit QC padrão" data-preco="0.44">
-            <div class="service-card-text">
-              <span class="service-card-name">Kit QC padrão (até 10 fotos)</span>
-              <span class="service-card-price">US$ 0,44</span>
-            </div>
-          </label>
+          </div>
         </div>
-        <div class="custom-photo-row">
-          <label>
-            <input type="checkbox" id="customPhotoCheck" onchange="toggleCustomPhotoQty()">
-            <span class="service-card-name">Foto personalizada</span>
-            <span class="service-card-price" style="margin-left:6px;">US$ 0,15 cada</span>
-          </label>
-          <input type="number" id="customPhotoQty" value="1" min="1">
-        </div>
-      </div>
+      </details>
 
       <div class="field" style="margin-top:20px;">
         <label for="declValue">Valor declarado</label>
@@ -843,17 +900,36 @@ function toggleCustomPhotoQty() {
   qty.style.display = check.checked ? 'inline-block' : 'none';
 }
 
-// realça visualmente os cards de serviço quando marcados
+// realça visualmente os cards de serviço quando marcados, e atualiza o resumo do accordion
+function atualizarResumoExtras() {
+  const marcados = document.querySelectorAll('.servico-extra:checked').length;
+  const customCheck = document.getElementById('customPhotoCheck');
+  const customAtivo = customCheck && customCheck.checked;
+  const total = marcados + (customAtivo ? 1 : 0);
+
+  const countEl = document.getElementById('extrasCount');
+  if (total === 0) {
+    countEl.textContent = 'opcional';
+    countEl.classList.remove('active');
+  } else {
+    countEl.textContent = `${total} selecionado${total > 1 ? 's' : ''}`;
+    countEl.classList.add('active');
+  }
+}
+
 document.addEventListener('change', (e) => {
   if (e.target.classList && e.target.classList.contains('servico-extra')) {
     const card = e.target.closest('.service-card');
     if (card) card.classList.toggle('checked', e.target.checked);
   }
+  if (e.target.id === 'customPhotoCheck' || (e.target.classList && e.target.classList.contains('servico-extra'))) {
+    atualizarResumoExtras();
+  }
 });
 
 function calcularServicosExtras() {
-  // todos os preços de referência estão em USD, mas são de fato pagos em Yuan.
-  // por isso: USD -> converte pra Yuan (via câmbio comercial) -> depois pra Real (via cotação Cayuan/ByteMax escolhida)
+  // todos os preços mostrados são de referência em USD (como aparecem na tela do CSSBuy),
+  // mas o pagamento de fato acontece em Yuan. Convertemos direto USD -> Real pelo câmbio comercial.
   let totalUSD = 0;
   const itens = [];
 
